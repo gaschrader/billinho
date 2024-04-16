@@ -18,7 +18,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_04_16_144110) do
     t.decimal "bill_cost"
     t.date "due_date"
     t.bigint "enrollment_id", null: false
-    t.string "status"
+    t.string "status", default: "Aberta"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["enrollment_id"], name: "index_bills_on_enrollment_id"
