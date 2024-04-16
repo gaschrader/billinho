@@ -40,7 +40,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_04_16_144110) do
   create_table "institutions", force: :cascade do |t|
     t.string "name"
     t.string "cnpj"
-    t.string "type"
+    t.string "institution_type"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
