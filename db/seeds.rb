@@ -8,8 +8,12 @@
 #     MovieGenre.find_or_create_by!(name: genre_name)
 #   end
 
+# Populate the Institution table with fake names, cnpjs and a random institution type
+
+possible_institution_types = ['Universidade', 'Escola', 'Creche']
+
 10.times do
   Institution.create(name: Faker::Company.name,
                      cnpj: Faker::Company.brazilian_company_number,
-                     institution_type: 'Universidade')
+                     institution_type: possible_institution_types.sample)
 end
