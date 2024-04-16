@@ -1,3 +1,3 @@
 class Bill < ApplicationRecord
-  belongs_to :Enrollment
+  belongs_to :enrollment
 end
