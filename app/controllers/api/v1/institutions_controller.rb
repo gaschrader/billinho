@@ -20,7 +20,7 @@ module Api
         @institution = Institution.new(institution_params)
 
         if @institution.save
-          render json: @institution, status: :created, location: @institution
+          render json: @institution, status: :created, location: url_for([:api, :v1, @institution])
         else
           render json: @institution.errors, status: :unprocessable_entity
         end

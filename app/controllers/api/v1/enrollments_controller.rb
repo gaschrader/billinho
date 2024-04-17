@@ -20,7 +20,7 @@ module Api
         @enrollment = Enrollment.new(enrollment_params)
 
         if @enrollment.save
-          render json: @enrollment, status: :created, location: @enrollment
+          render json: @enrollment, status: :created, location: url_for([:api, :v1, @enrollment])
         else
           render json: @enrollment.errors, status: :unprocessable_entity
         end
@@ -48,7 +48,7 @@ module Api
 
         # Only allow a list of trusted parameters through.
         def enrollment_params
-          params.require(:enrollment).permit(:total_cost, :number_of_bills, :bill_due_date, :course_name, :Institution_id, :Student_id)
+          params.require(:enrollment).permit(:total_cost, :number_of_bills, :bill_due_date, :course_name, :institution_id, :student_id)
         end
     end
   end

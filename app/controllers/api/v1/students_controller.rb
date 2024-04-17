@@ -20,7 +20,7 @@ module Api
         @student = Student.new(student_params)
 
         if @student.save
-          render json: @student, status: :created, location: @student
+          render json: @student, status: :created, location: url_for([:api, :v1, @student])
         else
           render json: @student.errors, status: :unprocessable_entity
         end

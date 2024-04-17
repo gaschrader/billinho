@@ -20,7 +20,7 @@ module Api
         @bill = Bill.new(bill_params)
 
         if @bill.save
-          render json: @bill, status: :created, location: @bill
+          render json: @bill, status: :created, location: url_for([:api, :v1, @bill])
         else
           render json: @bill.errors, status: :unprocessable_entity
         end
@@ -48,7 +48,7 @@ module Api
 
         # Only allow a list of trusted parameters through.
         def bill_params
-          params.require(:bill).permit(:bill_cost, :due_date, :Enrollment_id, :status)
+          params.require(:bill).permit(:bill_cost, :due_date, :enrollment_id, :status)
         end
     end
   end
