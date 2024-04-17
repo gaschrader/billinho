@@ -15,10 +15,7 @@ class Enrollment < ApplicationRecord
     }
   validates :bill_due_date,
     presence: true,
-    numericality: {
-      greather_than_or_equal_to: 1,
-      less_than_or_equal_to: 31           # posso colocar mensagem
-    }
+    inclusion: 1..31
   validates :course_name,
     presence: true
   validate :institution_id_exists
