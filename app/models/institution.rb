@@ -1,4 +1,5 @@
 class Institution < ApplicationRecord
+  has_many :enrollment
   validates :name,
     uniqueness: true,
     presence: true
