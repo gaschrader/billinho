@@ -18,8 +18,7 @@ module Api
       # POST /enrollments
       def create
         @enrollment = Enrollment.new(enrollment_params)
-        puts @enrollment
-        puts @enrollment.attributes
+
         if @enrollment.save
           @bills = []
 
@@ -28,18 +27,16 @@ module Api
           curr_day = date.day
           bill_date = Date.parse("#{@enrollment.bill_due_date.to_s}/#{date.mon}/#{date.year}")
 
-          if @enrollment.bill_due_date <= curr_day
-            day_addition = 30
-          else
-            day_addition = 0
-          end
+          month_addition = (@enrollment.bill_due_date <= curr_day) ? 1 : 0
 
           @enrollment.number_of_bills.times do
-            current_bill = Bill.new(bill_cost: @enrollment.total_cost / @enrollment.number_of_bills,
-                                    due_date: bill_date + day_addition.days,
-                                    enrollment: @enrollment,
-                                    status: "Aberta")
-            day_addition += 30
+            current_bill = Bill.new(
+              bill_cost: @enrollment.total_cost / @enrollment.number_of_bills,
+              due_date: bill_date + month_addition.months,
+              enrollment: @enrollment,
+              status: "Aberta"
+            )
+            month_addition += 1
             @bills.append(current_bill.save!)
           end
 
