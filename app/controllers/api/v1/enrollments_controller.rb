@@ -18,8 +18,31 @@ module Api
       # POST /enrollments
       def create
         @enrollment = Enrollment.new(enrollment_params)
-
+        puts @enrollment
+        puts @enrollment.attributes
         if @enrollment.save
+          @bills = []
+
+          curr_date = Time.now.strftime("%d/%m/%Y")
+          date = Date.parse(curr_date)
+          curr_day = date.day
+          bill_date = Date.parse("#{@enrollment.bill_due_date.to_s}/#{date.mon}/#{date.year}")
+
+          if @enrollment.bill_due_date <= curr_day
+            day_addition = 30
+          else
+            day_addition = 0
+          end
+
+          @enrollment.number_of_bills.times do
+            current_bill = Bill.new(bill_cost: @enrollment.total_cost / @enrollment.number_of_bills,
+                                    due_date: bill_date + day_addition.days,
+                                    enrollment: @enrollment,
+                                    status: "Aberta")
+            day_addition += 30
+            @bills.append(current_bill.save!)
+          end
+
           render json: @enrollment, status: :created, location: url_for([:api, :v1, @enrollment])
         else
           render json: @enrollment.errors, status: :unprocessable_entity
