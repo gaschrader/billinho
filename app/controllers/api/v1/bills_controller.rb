@@ -2,10 +2,17 @@ module Api
   module V1
     class BillsController < ApplicationController
       before_action :set_bill, only: %i[ show update destroy ]
+      before_action :set_enrollment, only: %i[ enrollment_bills ]
 
       # GET /bills
       def index
         @bills = Bill.all
+
+        render json: @bills
+      end
+
+      def enrollment_bills
+        @bills = Bill.where(enrollment_id: @enrollment.id)
 
         render json: @bills
       end
@@ -44,6 +51,10 @@ module Api
         # Use callbacks to share common setup or constraints between actions.
         def set_bill
           @bill = Bill.find(params[:id])
+        end
+
+        def set_enrollment
+          @enrollment = Enrollment.find(params[:id])
         end
 
         # Only allow a list of trusted parameters through.
