@@ -44,25 +44,7 @@ module Api
       def create_bills
         @bills = []
 
-        date = Date.parse(Time.now.strftime("%d/%m/%Y"))
-        begin_next_month = (@enrollment.bill_due_date <= date.day) ? 1 : 0
-
-        # Conficional para pegar data da primeira fatura gerada
-        if begin_next_month
-          # Esse condicional só cai em um cenário completamente anormal
-          # em que a bill_due_date é 31 e a matrícula é criada dia 31.
-          if not Date.valid_date?(date.year, date.mon + 1, @enrollment.bill_due_date)
-            bill_date = date.next_month.end_of_month
-          else
-            bill_date = Date.parse("#{@enrollment.bill_due_date.to_s}/#{date.mon + 1}/#{date.year}")
-          end
-        else
-          if not Date.valid_date?(date.year, date.mon, @enrollment.bill_due_date)
-            bill_date = date.end_of_month
-          else
-            bill_date = Date.parse("#{@enrollment.bill_due_date.to_s}/#{date.mon}/#{date.year}")
-          end
-        end
+        bill_date = get_first_bill
 
         @enrollment.number_of_bills.times do
           current_bill = Bill.new(
@@ -87,6 +69,28 @@ module Api
             bill_date = Date.parse("#{bill_day.to_s}/#{bill_month}/#{bill_year}")
           end
         end
+      end
+
+      def get_first_bill
+        date = Date.parse(Time.now.strftime("%d/%m/%Y"))
+
+        begin_next_month = date.day <= @enrollment.bill_due_date ? 0 : 1
+
+        if begin_next_month == 1
+          if not Date.valid_date?(date.year, date.mon + 1, @enrollment.bill_due_date)
+            bill_date = date.next_month.end_of_month
+          else
+            bill_date = Date.parse("#{@enrollment.bill_due_date.to_s}/#{date.mon + 1}/#{date.year}")
+          end
+        else
+          Rails.logger.info "==============================Entrou no else #{begin_next_month}==============================="
+          if not Date.valid_date?(date.year, date.mon, @enrollment.bill_due_date)
+            bill_date = date.end_of_month
+          else
+            bill_date = Date.parse("#{@enrollment.bill_due_date.to_s}/#{date.mon}/#{date.year}")
+          end
+        end
+        return bill_date
       end
 
       private
