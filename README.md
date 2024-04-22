@@ -15,11 +15,21 @@ pelos alunos à instituição de ensino que ele estuda.
 
 2.  [Rodando a aplicação](#rodando-a-aplicação)
 
-3.  [Funcionalidades](#funcionalidades)
+3.  [Estrutura das tabelas](#estrutura-das-tabelas)
 
-    3.1.    [Criação (Método POST)](#criação)
+    3.1.    [Institutions](#institutions)
 
-    3.2.    [Listagem (Método GET)](#listagem)
+    3.2.    [Students](#students)
+
+    3.3.    [Enrollments](#enrollments)
+
+    3.4.    [Bills](#bills)
+
+4.  [Funcionalidades](#funcionalidades)
+
+    4.1.    [Criação (Método POST)](#criação)
+
+    4.2.    [Listagem (Método GET)](#listagem)
 
 ## Instalação 
 
@@ -88,9 +98,59 @@ Agora que o terminal está aberto no local correto, podemos agora usar o código
 rails server
 ```
 
-Com esse comando, o servidor da aplicação é aberto e será possível utilizar todas as *features* disponíveis.
+Com esse comando, o servidor da aplicação é aberto e será possível utilizar todas as *features* disponíveis. Vale lembrar que, como trata-se de uma aplicação API (*Application Programming Interface*), não há páginas visuais (ainda) para cada rota possível. O que pode-se observar no *website* são os JSON carregados que correspondem as requisições feitas via URL. 
 
 Agora, podemos finalmente abrir o software *Postman* e realizar as requisições desejadas para nossa API. Caso você não conheça o *software*, este [link](https://learning.postman.com/docs/introduction/overview/) te leva ao site que apresenta uma visão geral da ferramenta e sua documentação.
+
+## Estrutura das tabelas
+
+Nesta aplicação, temos quatro tipos de tabelas:
+
+- Institutions - Tabela que corresponde às Instituições de Ensino;
+- Students - Tabela que corresponde aos Alunos;
+- Enrollments - Tabela que corresponde às Matrículas;
+- Bills - Tabela que corresponde às Faturas.
+
+Abaixo, segue o modelo de cada tabela, com cada atributo e seu tipo.
+
+### Institutions
+
+| Campo    | Tipo    |
+| -------- | ------- |
+| Nome     | texto   |
+| CNPJ     | texto   |
+| Tipo     | texto   |
+
+### Students
+
+| Campo                | Tipo    |
+| --------             | ------- |
+| Nome                 |  texto  |
+| CPF                  |  texto  |
+| Data de Nascimento   |  data   |
+| Telefone celular     | inteiro |
+| Gênero               |  texto  |
+| Meio de Pagamento    |  texto  |
+
+### Enrollments
+
+| Campo                            |         Tipo        |
+| --------                         | ------------------- |
+| Valor total do curso             |        decimal      |
+| Quantidade de faturas            |        inteiro      |
+| Dia de vencimento das faturas    |        inteiro      |
+| Nome do curso                    |         texto       |
+| Id da Instituição                |  chave estrangeira  |
+| Id do aluno                      |  chave estrangeira  |
+
+### Bills
+
+| Campo               |         Tipo        |
+| --------            | ------------------- |
+| Valor da fatura     |       decimal       |
+| Data de vencimento  |        data         |
+| Id da Matrícula     |  chave estrangeira  |
+| Status              |        texto        |
 
 ## Funcionalidades
 
