@@ -11,6 +11,7 @@ module Api
         render json: @bills
       end
 
+      # GET /enrollment/:id/bills
       def enrollment_bills
         @bills = Bill.where(enrollment_id: @enrollment.id)
 
@@ -53,6 +54,7 @@ module Api
           @bill = Bill.find(params[:id])
         end
 
+        # Set the enrollment for the bill
         def set_enrollment
           @enrollment = Enrollment.find(params[:id])
         end

@@ -41,6 +41,7 @@ module Api
         @enrollment.destroy!
       end
 
+      # Create bills after an enrollment is created
       def create_bills
         @bills = []
 
@@ -55,12 +56,7 @@ module Api
           )
           @bills.append(current_bill.save!)
 
-          if bill_date.day < @enrollment.bill_due_date
-            bill_date += (@enrollment.bill_due_date - bill_date.day).days
-          else
-            bill_date += 1.months
-          end
-
+          bill_date = bill_date.next_month
           bill_day, bill_month, bill_year = @enrollment.bill_due_date, bill_date.month, bill_date.year
 
           if not Date.valid_date?(bill_year, bill_month, bill_day)
@@ -71,25 +67,18 @@ module Api
         end
       end
 
+      # Get the first bill for the enrollment
       def get_first_bill
         date = Date.parse(Time.now.strftime("%d/%m/%Y"))
 
         begin_next_month = date.day <= @enrollment.bill_due_date ? 0 : 1
 
-        if begin_next_month == 1
-          if not Date.valid_date?(date.year, date.mon + 1, @enrollment.bill_due_date)
-            bill_date = date.next_month.end_of_month
-          else
-            bill_date = Date.parse("#{@enrollment.bill_due_date.to_s}/#{date.mon + 1}/#{date.year}")
-          end
+        if not Date.valid_date?(date.year, date.mon + begin_next_month, @enrollment.bill_due_date)
+          bill_date = date.next_month(begin_next_month).end_of_month
         else
-          Rails.logger.info "==============================Entrou no else #{begin_next_month}==============================="
-          if not Date.valid_date?(date.year, date.mon, @enrollment.bill_due_date)
-            bill_date = date.end_of_month
-          else
-            bill_date = Date.parse("#{@enrollment.bill_due_date.to_s}/#{date.mon}/#{date.year}")
-          end
+          bill_date = Date.parse("#{@enrollment.bill_due_date.to_s}/#{date.mon + begin_next_month}/#{date.year}")
         end
+
         return bill_date
       end
 
