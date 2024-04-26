@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-  mount RailsAdmin::Engine => '/api/v1/admin', as: 'rails_admin'
+  mount RailsAdmin::Engine => '/', as: 'rails_admin'
   namespace :api do
     namespace :v1 do
       resources :enrollments do
