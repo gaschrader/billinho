@@ -10,9 +10,11 @@ gem "pg", "~> 1.1"
 
 gem "faker"
 
-gem 'cpf_faker'
+gem "cpf_faker"
 
 gem "rails-i18n"
+
+gem "rails_admin"
 
 # Use the Puma web server [https://github.com/puma/puma]
 gem "puma", ">= 5.0"
@@ -52,3 +54,4 @@ group :development do
   # Speed up commands on slow machines / big apps [https://github.com/rails/spring]
   # gem "spring"
 end
+gem "sassc-rails"
